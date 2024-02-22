@@ -64,11 +64,7 @@ class DBStorage:
     def save(self):
         """save changes
         """
-        my_dict = {}
-        for key, value in self.__objects.items():
-            my_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+        self.__session.commit()
 
     def delete(self, obj=None):
         """delete an element in the table
