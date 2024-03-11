@@ -15,9 +15,9 @@ def do_deploy(archive_path):
     """
     if exists(archive_path) is False:
         return False
-    file = archive_path.split('/')[-1]
-    no_tgz = '/data/web_static/releases/' + "{}".format(file.split('.')[0])
-    tmp = "/tmp/" + file
+    filename = archive_path.split('/')[-1]
+    no_tgz = '/data/web_static/releases/' + "{}".format(filename.split('.')[0])
+    tmp = "/tmp/" + filename
 
     try:
         put(archive_path, "/tmp/")
