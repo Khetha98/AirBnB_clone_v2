@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ a class from sqlalchemy"""
 
-
 from os import getenv
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -77,4 +76,4 @@ class DBStorage:
     def close(self):
         """ calls remove()
         """
-        self.__session.close()
+        self.__session.remove()
