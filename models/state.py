@@ -7,8 +7,6 @@ import models
 import shlex
 
 
-
-
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
