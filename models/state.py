@@ -4,31 +4,29 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import models
-from models.city import City
+import shlex
 
 
 
 
 class State(BaseModel, Base):
     """ State class """
-    if models.storage == "db":
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state")
-    else:
-        name = ""
-
-    def __init__(self, *args, **kwargs):
-        """initializes state"""
-        super().__init__(*args, **kwargs)
-
-    if models.storage != "db":
-        @property
-        def cities(self):
-            """getter for the list of city instances related to state"""
-            city_list = []
-            all_cities = models.storage.all(City)
-            for city in all_cities.values():
-                if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state")
+    
+    @property
+    def cities(self):
+        var = models.storage.all()
+        list_a = []
+        res = []
+        for key in var:
+            city = key.replace(".", " ")
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                list_a.append(var[key])
+        for element in list_a:
+            if (element.state_id == self.id):
+                res.append(element)
+            return (res)
