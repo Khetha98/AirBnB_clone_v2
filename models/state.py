@@ -3,8 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
 import models
+import shlex
 
 
 class State(BaseModel, Base):
@@ -16,6 +16,15 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        """Getter method for the list of City objects linked to the current State."""
-        all_cities = models.storage.all(City)
-        return [city for city in all_cities.values() if city.state_id == self.id]
+        var = models.storage.all()
+        list_a = []
+        res = []
+        for key in var:
+            city = key.replace(".", " ")
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                list_a.append(var[key])
+        for element in list_a:
+            if (element.state_id == self.id):
+                res.append(element)
+            return (res)
