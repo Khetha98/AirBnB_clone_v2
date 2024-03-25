@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import models
-import shlex
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -16,15 +16,16 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        var = models.storage.all()
-        list_a = []
-        res = []
-        for key in var:
-            city = key.replace(".", " ")
-            city = shlex.split(city)
-            if (city[0] == 'City'):
-                list_a.append(var[key])
-        for element in list_a:
-            if (element.state_id == self.id):
-                res.append(element)
-            return (res)
+        """
+        Getter method for the list of City objects linked to the current State.
+        """
+        if models.storage.__class__.__name__ != 'DBStorage':
+            return None
+
+        associated_cities = []
+
+        for city in models.storage.all(City).values():
+            if city.state_id == self.id:
+                associated_cities.append(city)
+
+        return associated_cities or None
