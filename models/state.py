@@ -20,7 +20,7 @@ class State(BaseModel, Base):
         Getter method for the list of City objects linked to the current State.
         """
         if models.storage.__class__.__name__ != 'DBStorage':
-            return None
+            return []
 
         associated_cities = []
 
@@ -28,4 +28,4 @@ class State(BaseModel, Base):
             if city.state_id == self.id:
                 associated_cities.append(city)
 
-        return associated_cities or None
+        return associated_cities
